@@ -1,0 +1,147 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+
+    @Styles.Render("~/css/animate.css")
+    @Styles.Render("~/css/icomoon.css")
+    @Styles.Render("~/css/bootstrap.css")
+    @Styles.Render("~/css/magnific-popup.css")
+    @Styles.Render("~/css/flexslider.css")
+    @Styles.Render("~/css/owl.carousel.min.css")
+    @Styles.Render("~/css/owl.theme.default.min.css")
+    @Styles.Render("~/css/style.css")
+
+    @Scripts.Render("~/js/jquery.min.js")
+    @Scripts.Render("~/js/jquery.easing.1.3.js")
+    @Scripts.Render("~/js/bootstrap.min.js")
+    @Scripts.Render("~/js/jquery.waypoints.min.js")
+    @Scripts.Render("~/js/jquery.flexslider-min.js")
+    @Scripts.Render("~/js/owl.carousel.min.js")
+    @Scripts.Render("~/js/jquery.magnific-popup.min.js")
+    @Scripts.Render("~/js/magnific-popup-options.js")
+    @Scripts.Render("~/js/main.js")
+
+</head>
+<body>
+
+    <div class="colorlib-loader"></div>
+
+    <div id="page">
+        <nav class="colorlib-nav" role="navigation">
+            <div class="top-menu">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <div id="colorlib-logo"><a href="#">Builder</a></div>
+                        </div>
+
+                        <div class="col-xs-10 text-right menu-1">
+                            <ul class="nav navbar-nav">
+                                <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                                @if (User.IsInRole("Admin"))
+                                {
+                                    <li> @Html.ActionLink("Create Post", "Create", "Home")</li> 
+                                }  
+                            </ul>
+                             @Html.Partial("_LoginPartial")
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container body-content">
+            @RenderBody()
+
+            <footer id="colorlib-footer" role="contentinfo">
+                <div class="container">
+                    <div class="row row-pb-md">
+                        <div class="col-md-3">
+                            <h2>Navigational</h2>
+                            <p>
+                                <ul class="colorlib-footer-links">
+                                    <li><a href="@Url.Action("Index", "Home")"><i class="icon-check"></i> Home</a></li>
+                                   
+                                </ul>
+                            </p>
+                        </div>
+                        <div class="col-md-3">
+                            <h2>Recent Post</h2>
+                            @*<div class="f-blog">
+                                <a href="blog.html" class="blog-img" style="background-image: url(/images/blog-1.jpg);">
+                                </a>
+                                <div class="desc">
+                                    <h3><a href="blog.html">Be a designer</a></h3>
+                                    <p class="admin"><span>25 March 2018</span></p>
+                                </div>
+                            </div>
+                            <div class="f-blog">
+                                <a href="blog.html" class="blog-img" style="background-image: url(/images/blog-2.jpg);">
+                                </a>
+                                <div class="desc">
+                                    <h3><a href="blog.html">How to build website</a></h3>
+                                    <p class="admin"><span>24 March 2018</span></p>
+                                </div>
+                            </div>
+                            <div class="f-blog">
+                                <a href="blog.html" class="blog-img" style="background-image: url(/images/blog-3.jpg);">
+                                </a>
+                                <div class="desc">
+                                    <h3><a href="blog.html">Create website</a></h3>
+                                    <p class="admin"><span>23 March 2018</span></p>
+                                </div>
+                            </div>*@
+                        </div>
+                        <div class="col-md-3">
+                            <h2>Archive</h2>
+                            <p>
+                                <ul class="colorlib-footer-links">
+                                    @*<li><a href="#"><i class="icon-check"></i> February 2018</a></li>
+                                    <li><a href="#"><i class="icon-check"></i> January 2018</a></li>
+                                    <li><a href="#"><i class="icon-check"></i> December 2017</a></li>
+                                    <li><a href="#"><i class="icon-check"></i> November 2017</a></li>
+                                    <li><a href="#"><i class="icon-check"></i> October 2017</a></li>
+                                    <li><a href="#"><i class="icon-check"></i> September 2017</a></li>*@
+                                </ul>
+                            </p>
+                        </div>
+                        <div class="col-md-3">
+                            <h2>Tags</h2>
+                            <p class="tags">
+                                @*<span><a href="#"><i class="icon-tag"></i> Modeling</a></span>
+                                <span><a href="#"><i class="icon-tag"></i> Fashion</a></span>
+                                <span><a href="#"><i class="icon-tag"></i> Tech</a></span>
+                                <span><a href="#"><i class="icon-tag"></i> Travel</a></span>*@
+
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>
+                                <small class="block">
+                                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                    Copyright &copy;
+                                    <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="icon-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                </small>
+
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+        @RenderSection("scripts", required: false)
+    </div> 
+</body>
+</html>

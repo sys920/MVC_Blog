@@ -1,0 +1,63 @@
+﻿@model CreatePostViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+
+@section scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
+    <script src="~/Scripts/tinymce/jquery.tinymce.min.js"></script>
+    <script src="~/Scripts/CreateEditPost.js"></script>
+
+}
+
+<h2>Edit Post</h2>
+
+
+<form method="post" enctype="multipart/form-data">
+    @Html.ValidationSummary(false)
+    <div class="form-group">
+        @Html.LabelFor(Model => Model.Title, "Title :")
+        @Html.TextBoxFor(Model => Model.Title, new { @class = "form-control ", placeholder = "" })
+        <div class="text-danger">
+            @Html.ValidationMessageFor(Model => Model.Title)
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(Model => Model.Body, "Article :")
+        @Html.TextAreaFor(Model => Model.Body, new { @class = "form-control ", placeholder = "" })
+        <div class="text-danger">
+            @Html.ValidationMessageFor(Model => Model.Body)
+        </div>
+    </div>
+
+    <div>
+
+        @Html.LabelFor(Model => Model.Media, "File Upload :")
+
+        @if (Model.MediaUrl != null)
+        {
+            <div><img class="img-thumbnail" src="@Url.Content(Model.MediaUrl)" /></div>
+        }
+
+
+        <input type="file" name="Media" />
+
+    </div>
+    <p></p>
+    <div class="form-group">
+        @Html.LabelFor(Model => Model.Published, "Publish : ")
+        @Html.CheckBoxFor(Model => Model.Published, new { @class = "checkbox-inline" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(Model => Model.MainSlide, "Main Slide : ")
+        @Html.CheckBoxFor(Model => Model.MainSlide, new { @class = "checkbox-inline" })
+    </div>
+
+    <button type="submit" class="btn-primary">Update</button>
+    <p></p>
+</form>

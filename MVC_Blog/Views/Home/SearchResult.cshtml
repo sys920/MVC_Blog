@@ -1,0 +1,117 @@
+﻿@model List<SearchPostViewModel>
+@{
+    ViewBag.Title = "Search Result";
+}
+
+@section scripts {
+    <script src="~/Scripts/indexPost.js" type="text/javascript"></script>
+    <script src="~/js/jquery.ellipsis.js"></script>
+}
+
+
+
+<div class="colorlib-loader"> </div>
+
+
+<div class="row">
+    <div class="col-md-5 text-center">
+
+        <div class="side form-group">
+            <form method="post" action="@Url.Action("SearchResult", "Home")">
+                <input type="text" name="keyword" class="form-control" id="keyword" placeholder="Enter any key to search...">
+                <button type="submit" class="btn btn-primary"><i class="icon-search3"></i></button>
+            </form>
+        </div>
+
+
+    </div>
+</div>
+
+
+<aside id="colorlib-hero">
+    <div class="flexslider">
+        <ul class="slides">
+           
+       
+            <li style="background-image: url(../../images/blog-11.jpg);">
+                <div class="overlay"></div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6 col-md-pull-3 col-sm-12 col-xs-12 col-md-offset-3 slider-text">
+                            <div class="slider-text-inner">
+                                <div class="desc">
+                                    <p class="meta">
+                                        <span class="date">Search </span>
+                                        
+                                    </p>
+                                    <div> <h1> </h1></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        
+            
+        </ul>
+    </div>
+</aside>
+
+<div id="colorlib-container">
+
+    <div class="container">
+
+
+        @foreach (var element in Model)
+        {
+            <div class="col-md-4">
+                <div class="blog-entry">
+                    <div class="blog-img">
+                        @if (element.MediaUrl != null)
+                        {
+                            <img src="@Url.Content(element.MediaUrl)" class="img-responsive" alt="html5 bootstrap template" />
+                        }
+
+                    </div>
+                    <div class="desc">
+                        <p class="meta">
+                            <span class="cat">@element.DateCreate.ToString("MM/dd/yyyy")</span>
+                            <span class="date">by Admin</span>
+                        </p>
+                        <h2 class="two-lines">
+                            @(element.Title)
+                        </h2>
+                        <div class="five-lines">
+                            @Html.Raw(element.Body)
+                        </div>
+                        <div class="text-right">
+                            <a class="btn-primary  btn-sm" href="@Url.Action("DetailBySlugName", "Home", new {SlugName = element.Slug })">Read More</a>
+                            <br />
+
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <div>
+                                    <a class="btn-info  btn-sm" href="@Url.Action("Edit", "Home", new { id = element.Id })">Update</a>
+
+                                    <a class="btn-warning  btn-sm" href="@Url.Action("Delete", "Home", new { id = element.Id })">Delete</a>
+
+
+                                    @*<form method="post" action="@Url.Action("Delete", "Home", new { id = element.Id })">
+                                            <a href="#" class="btn-primary btn-sm">Delete</a>
+                                        </form>*@
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+</div>
+
+
+
+<div class="gototop js-top">
+    <a href="#" class="js-gotop"><i class="icon-arrow-up2"></i></a>
+</div>

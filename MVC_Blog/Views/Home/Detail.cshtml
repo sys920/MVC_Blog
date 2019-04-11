@@ -1,0 +1,220 @@
+﻿
+@model DetailPostViewModel
+
+@{
+    ViewBag.Title = "Detail";
+
+}
+
+@section scripts {
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/formDataValidation.js"></script>
+}
+
+<aside id="colorlib-breadcrumbs">
+    @*<aside id="colorlib-breadcrumbs" style="background-image: url(../../images/blog-1.jpg);">*@
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 breadcrumbs text-center">
+                <h2>BLOG DETAILS</h2>
+            </div>
+        </div>
+    </div>
+</aside>
+
+<div id="colorlib-container">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-9 content">
+                <div class="row row-pb-lg">
+                    <div class="col-md-12">
+                        <div class="blog-entry">
+                            <div class="blog-img blog-detail">
+                                @if (Model.MediaUrl != null)
+                                {
+                                    <img class="img-responsive" src="@Url.Content(Model.MediaUrl)" alt="">
+                                }
+
+                            </div>
+                            <div class="desc">
+                                <p class="meta">
+                                    <span class="text-primary">Created</span>
+                                    @*<span class="date">@Model.DateCreate.ToString("dd MMMM yyyy")</span>*@
+                                    <span class="date">@Model.DateCreate</span>
+                                    <span class="text-muted">By Admin</span>
+                                </p>
+                                <h2>@Model.Title</h2>
+                                <p> @Html.Raw(Model.Body) </p>
+                                <p>
+
+                                    @if (Model.DateUpdate != null)
+                                    {
+                                        <span class="text-danger">Update</span>
+                                        @*<span class="date">@(Model.DateUpdate.HasValue ? Model.DateUpdate.Value.ToString("dd MMMM yyyy") : string.Empty) </span>*@
+                                        <span class="date">@Model.DateUpdate </span>
+
+                                    }
+
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row row-pb-lg">
+                    <div class="col-md-12">
+                        <h2 class="heading-2">Comments</h2>
+
+                        @*Display all comments*@
+                        @foreach (var ele in Model.Comments)
+                        {
+                            <div class="review bg-info">
+                                <p>
+                                    <span class="text-warning">Created</span>
+                                    @*<span class="text-info"> @ele.DateCreate.ToString("dd MMMM yyyy")</span>*@
+                                    <span class="text-info"> @ele.DateCreate</span>
+                                    <span class="text-warning">By </span>
+                                    <span class="text-info"> @ele.User.UserName</span>
+                                </p>
+                                <h4>@ele.CommentMessage</h4>
+
+
+                                @if (ele.CommentUpdatedReason != null)
+                                {
+                                    <p>
+                                        <span class="text-warning">Updated</span>
+                                        @*<span class="text-info">@ele.DateUpdate.Value.ToString("dd MMMM yyyy")</span>*@
+                                        <span class="text-info">@ele.DateUpdate.Value</span>
+                                    </p>
+                                    <h4 class="icon-user"> : @ele.CommentUpdatedReason</h4>
+                                }
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+                                {
+                                    <div class="row">
+                                        <div class="col-sm-1">
+                                            <form method="post" action="@Url.Action("DetailBySlugName", "Home", new {SlugName = Model.Slug})">
+                                                <input type="hidden" name="CommentUpdateId" value=@ele.Id />
+                                                <input type="submit" value="Update" class="btn-info">
+                                            </form>
+                                        </div>
+
+                                        <div class="col-sm-1">
+                                            <form method="post" action="@Url.Action("DetailBySlugName", "Home", new {SlugName = Model.Slug})">
+                                                <input type="hidden" name="CommentDeleteId" value=@ele.Id />
+                                                <input type="submit" value="Delete" class="btn-primary">
+                                            </form>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+
+
+                        @if (User.Identity.IsAuthenticated == true)
+                        {
+                            <h2 class="heading-2">Say something</h2>
+                            <form action="@Url.Action("DetailBySlugName", "Home", new {SlugName = Model.Slug} )" method="post">
+                                <input type="hidden" name="CommentUpdateId" value=@Model.CommentUpdateId />
+                                <div class="row form-group">
+                                    <div class="form-group">
+
+                                        @Html.LabelFor(Model => Model.CommentMessage, "Comment :")
+                                        @Html.TextAreaFor(Model => Model.CommentMessage, new { @class = "form-control ", placeholder = "Leave a short message to the Writer" })
+                                        <div class="text-danger">
+                                            @Html.ValidationMessageFor(Model => Model.CommentMessage)
+                                        </div>
+
+                                    </div>
+
+                                    @if (Model.CommentUpdateId != null && (User.IsInRole("Admin") || User.IsInRole("Moderator")))
+                                    {
+
+                                        <div class="form-group">
+                                            @Html.LabelFor(Model => Model.CommentUpdatedReason, "Update Reason :")
+                                            @Html.TextBoxFor(Model => Model.CommentUpdatedReason, new { @class = "form-control  ", placeholder = "You should leave a reason When you update user's comment" })
+                                        </div>
+                                        <div class="text-danger">
+                                            @Html.ValidationMessageFor(Model => Model.CommentUpdatedReason)
+                                        </div>
+                                        <div>
+                                            <input type="submit" value="Update Comment" class="btn-primary">
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <input type="submit" value="Post Comment" class="btn-primary">
+                                    }
+                                </div>
+                            </form>
+                        }
+                        else
+                        {
+                            <h2 class="heading-2">
+                            Please <a class="btn btn-primary" href="@Url.Action("Login", "Account")" role="button">Log in</a> 
+                            To comment</h2>
+                        }
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="sidebar">
+                    <div class="side">
+                        <form id="register-form" action="@Url.Action("Index", "Home")" novalidate="novalidate">
+
+                            <input type="text" name="searchKeyword" value="" class="form-control" placeholder="Enter any key to search...">
+
+
+                            <button type="submit" class="btn btn-primary"><i class="icon-search3"></i></button>
+                        </form>
+
+                    </div>
+                    <div class="side">
+                        <h2 class="sidebar-heading">Categories</h2>
+                        <p>
+                            <ul class="category">
+                                <li><a href="@Url.Action("Index", "Home")"><i class="icon-check"></i> Home</a></li>
+
+                            </ul>
+                        </p>
+                    </div>
+                    <div class="side">
+                        <h2 class="sidebar-heading">Recent Blog</h2>
+                        @*<div class="f-blog">
+                                <a href="blog.html" class="blog-img" style="background-image: url(images/blog-1.jpg);">
+                                </a>
+                                <div class="desc">
+                                    <h3><a href="blog.html">Be a designer</a></h3>
+                                    <p class="admin"><span>25 March 2018</span></p>
+                                </div>
+                            </div>
+                            <div class="f-blog">
+                                <a href="blog.html" class="blog-img" style="background-image: url(images/blog-2.jpg);">
+                                </a>
+                                <div class="desc">
+                                    <h3><a href="blog.html">How to build website</a></h3>
+                                    <p class="admin"><span>24 March 2018</span></p>
+                                </div>
+                            </div>
+                            <div class="f-blog">
+                                <a href="blog.html" class="blog-img" style="background-image: url(images/blog-3.jpg);">
+                                </a>
+                                <div class="desc">
+                                    <h3><a href="blog.html">Create website</a></h3>
+                                    <p class="admin"><span>23 March 2018</span></p>
+                                </div>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
